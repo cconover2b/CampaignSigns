@@ -102,7 +102,6 @@ dist
 
 # vuepress v2.x temp and cache directory
 .temp
-.cache
 
 # Docusaurus cache and generated files
 .docusaurus
@@ -128,3 +127,34 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# IDE/Editor folders
+.vscode
+.idea
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Firebase
+.firebase
+firebase-debug.log
+
+# MongoDB
+*.mongodb
+
+# Google Maps API
+google-maps-api-key.json
+
+# NextAuth
+nextauth.d.ts
+
+# shadcn build files
+.shadcn-ui
+
+# Temporary files
+*.tmp
+*.temp
+
+# Production build
+build
