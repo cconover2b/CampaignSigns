@@ -1,7 +1,7 @@
 // app/auth/actions/actions.ts
 'use server'
 
-import { hashPasswrod } from '@/lib/utils'
+import { hashPassword } from '@/lib/utils' // Corrected the typo
 import { UserModel } from '@/schemas/user'
 import { redirect } from 'next/navigation'
 import { connectToDB } from '@/lib/db'
@@ -13,10 +13,9 @@ const User = yup.object({
     email: yup.string().required('email is required').email(),
     password: yup.string().required('password is required').min(6),
 })
+
 export async function registerUser(prevState: any, formData: FormData) {
-
     try {
-
         const firstname = formData.get('firstname')
         const lastname = formData.get('lastname')
         const email = formData.get('email')
@@ -31,7 +30,7 @@ export async function registerUser(prevState: any, formData: FormData) {
             abortEarly: false
         })
 
-        const hash = await hashPasswrod(password?.toString() || '')
+        const hash = await hashPassword(password?.toString() || '') // Corrected the function name
 
         await connectToDB()
         

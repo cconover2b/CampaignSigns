@@ -1,16 +1,15 @@
 // app/dashboard/columns.tsx
-"use client"
+"use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Ticket, User } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { CiImageOff } from 'react-icons/ci';
-import { AiOutlineArrowUp } from 'react-icons/ai'
+import { AiOutlineArrowUp } from 'react-icons/ai';
 import { Badge } from "@/components/ui/badge";
 import { RowActions } from "./row-actions";
 import { Checkbox } from "@/components/ui/checkbox";
-
 
 export const columns: ColumnDef<Ticket>[] = [
     {
@@ -95,4 +94,4 @@ export const columns: ColumnDef<Ticket>[] = [
         id: 'actions',
         cell: ({row}) => <RowActions row={row} />
     }
-]
+];

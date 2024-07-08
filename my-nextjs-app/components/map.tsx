@@ -12,11 +12,10 @@ const buildMapInfoCardContent = (title: string, body: string): string => {
     </div>`;
 }
 
-function Map(latlong: LatLong) {
+function Map({ latlong }: { latlong: LatLong }) { // Destructure latlong from props
     const mapRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-
         const initMap = async () => {
             const loader = new Loader({
                 apiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY as string,
@@ -26,7 +25,6 @@ function Map(latlong: LatLong) {
             const { Map } = await loader.importLibrary('maps') as google.maps.MapsLibrary
             const { Marker } = await loader.importLibrary('marker') as google.maps.MarkerLibrary
 
-            // 43.6425662,-79.3870568
             const position = {
                 lat: latlong.coordinates[0],
                 lng: latlong.coordinates[1]
@@ -38,7 +36,6 @@ function Map(latlong: LatLong) {
                 mapId: 'PETRESCUE-1234'
             }
 
-            // setup the map
             const map = new Map(mapRef.current as HTMLDivElement, mapOptions)
 
             const marker = new Marker({
@@ -47,7 +44,7 @@ function Map(latlong: LatLong) {
                 title: "Pet found here",
                 icon: {
                     url: 'marker_flag.png',
-                    size: new google.maps.Size(32,32)
+                    size: new google.maps.Size(32, 32)
                 },
                 animation: google.maps.Animation.DROP
             })
@@ -56,7 +53,6 @@ function Map(latlong: LatLong) {
                 position: position,
                 content: buildMapInfoCardContent('title', 'body'),
                 minWidth: 200
-
             })
 
             infoCard.open({
@@ -66,12 +62,11 @@ function Map(latlong: LatLong) {
         }
 
         initMap()
-    },[]);
+    }, [latlong.coordinates]); // Add latlong.coordinates to the dependency array
 
-
-  return (
-    <div style={{ height: '600px'}} ref={mapRef} />
-  )
+    return (
+        <div style={{ height: '600px' }} ref={mapRef} />
+    )
 }
 
 export default Map

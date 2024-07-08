@@ -1,13 +1,13 @@
 // components/dialog/map-dialog.tsx
-import React from 'react'
+import React from 'react';
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/dialog"
-import { LatLong } from '@/types'
-import Map from '../map'
+} from "@/components/ui/dialog";
+import { LatLong } from '@/types';
+import Map from '../map';
 
 // 43.6425662,-79.3870568
 function MapDialog({
@@ -25,11 +25,10 @@ function MapDialog({
                 <DialogHeader>
                     <DialogTitle>MapView</DialogTitle>
                 </DialogHeader>
-                <Map coordinates={latlong.coordinates} />
+                <Map latlong={latlong} /> {/* Pass the latlong object */}
             </DialogContent>
         </Dialog>
-
-    )
+    );
 }
 
-export default MapDialog
+export default MapDialog;
