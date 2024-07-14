@@ -4,14 +4,14 @@ import { UserModel } from "@/schemas/user";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-    try {
-        await connectToDB();
+  try {
+    await connectToDB();
 
-        const users = await UserModel.find({});
+    const users = await UserModel.find({});
 
-        return NextResponse.json(users);
-    } catch (error) {
-        console.log(error);
-        return NextResponse.json({ message: "Failed to get users" });
-    }
+    return NextResponse.json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return NextResponse.json({ message: "Failed to get users" }, { status: 500 });
+  }
 }
