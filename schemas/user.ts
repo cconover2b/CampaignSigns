@@ -1,6 +1,6 @@
 // schemas/user.ts
 import { User } from "@/types";
-import { Schema, models, model } from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 
 
 const UserSchema = new Schema<User>({
