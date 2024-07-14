@@ -55,3 +55,16 @@ export async function POST(request: NextRequest) {
         });
     }
 }
+
+export async function GET() {
+    try {
+        await connectToDB();
+
+        const tickets = await TicketModel.find({}).populate('assignedInspector');
+
+        return NextResponse.json(tickets);
+    } catch (error) {
+        console.log(error);
+        return NextResponse.json({ message: "Failed to get tickets" });
+    }
+}

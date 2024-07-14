@@ -1,34 +1,52 @@
 // app/dashboard/stats.tsx
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { buildUrl } from '@/lib/utils'
-import React from 'react'
+"use client"; // Add this directive at the top
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { buildUrl } from '@/lib/utils';
+import React, { useEffect, useState } from 'react';
 import {
     MdFiberNew,
     MdOutlineDoneOutline, MdOutlineAssignmentTurnedIn, MdPersonAddDisabled
-} from 'react-icons/md'
+} from 'react-icons/md';
 
-interface Stats {
+interface StatsData {
     _id: { status: string },
     count: number
 }
 
-async function Stats() {
+function Stats() {
+    const [stats, setStats] = useState<StatsData[]>([]);
+    const [loading, setLoading] = useState(true);
 
-    // data from the backend fetch request
-    const stats = await fetch(buildUrl('stats'), {
-        cache: 'no-cache'
-    })
+    useEffect(() => {
+        async function fetchStats() {
+            try {
+                const response = await fetch(buildUrl('stats'), {
+                    cache: 'no-cache'
+                });
+                const json: StatsData[] = await response.json();
+                setStats(json);
+            } catch (error) {
+                console.error('Error fetching stats:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
 
-    const json: Stats[] = await stats.json()
+        fetchStats();
+    }, []);
 
     const statsFor = (token: string) => {
-        const filteredStats = json.filter(stats => stats._id.status === token)
-        return filteredStats.length > 0 ?
-            filteredStats.map(stats => stats.count) : 0
+        const filteredStats = stats.filter(stat => stat._id.status === token);
+        return filteredStats.length > 0 ? filteredStats.map(stat => stat.count) : 0;
+    };
+
+    if (loading) {
+        return <div>Loading...</div>;
     }
+
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-
             <Card className='bg-orange-300'>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-lg font-medium">
@@ -70,7 +88,7 @@ async function Stats() {
                     <div className="text-2xl font-bold">{statsFor('assigned')}</div>
                 </CardContent>
             </Card>
-            
+
             <Card className="bg-red-300">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-lg font-medium">
@@ -85,7 +103,7 @@ async function Stats() {
                 </CardContent>
             </Card>
         </div>
-    )
+    );
 }
 
-export default Stats
+export default Stats;

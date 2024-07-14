@@ -1,18 +1,17 @@
-// app/api/ticket/route.ts
+// app/api/user/route.ts
 import { connectToDB } from "@/lib/db";
-import { TicketModel } from "@/schemas/ticket";
-
+import { UserModel } from "@/schemas/user";
+import { NextResponse } from "next/server";
 
 export async function GET() {
-
     try {
-        await connectToDB()
+        await connectToDB();
 
-        const tickets = await TicketModel.find({}).populate('assignedInspector')
+        const users = await UserModel.find({});
 
-        return Response.json(tickets)
-    } catch(error) {
+        return NextResponse.json(users);
+    } catch (error) {
         console.log(error);
-        return Response.json({message: "Failed to get tickets"});
+        return NextResponse.json({ message: "Failed to get users" });
     }
 }
