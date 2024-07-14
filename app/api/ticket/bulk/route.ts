@@ -5,11 +5,11 @@ import { TicketModel } from "@/schemas/ticket";
 import { Ticket } from "@/types";
 import { deleteObject } from "firebase/storage";
 import { ObjectId } from "mongodb";
+import { NextResponse } from 'next/server';
 
 export async function PATCH(
     req: Request
 ) {
-
     try {
         await connectToDB();
 
@@ -23,11 +23,11 @@ export async function PATCH(
         }
         );
 
-        return Response.json("Tickets updated");
+        return NextResponse.json("Tickets updated");
 
     } catch (error) {
         console.log(error);
-        return Response.json("Failed to update tickets");
+        return NextResponse.json("Failed to update tickets", { status: 500 });
     }
 }
 
@@ -55,10 +55,9 @@ export async function DELETE(
             }
         }
         
-        return Response.json("Tickets deleted");
+        return NextResponse.json("Tickets deleted");
     } catch (error) {
         console.log(error);
-        return Response.json("Failed to delete tickets");
+        return NextResponse.json("Failed to delete tickets", { status: 500 });
     }
-
 }
