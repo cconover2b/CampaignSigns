@@ -31,6 +31,7 @@
 │   │   ├── data-table.tsx
 │   │   ├── inspector-list.tsx
 │   │   ├── layout.tsx
+│   │   ├── new-ticket-button.tsx.tsx
 │   │   ├── page.tsx
 │   │   ├── row-actions.tsx
 │   │   ├── stats.tsx
@@ -60,11 +61,13 @@
 │       ├── dialog.tsx
 │       ├── dropdown-menu.tsx
 │       ├── input.tsx
+│       ├── label.tsx
 │       ├── loader.tsx
 │       ├── popover.tsx
 │       ├── sheet.tsx
 │       ├── submit-button.tsx
 │       ├── table.tsx
+│       ├── textarea.tsx
 │       └── toast.tsx
 ├── components.json
 ├── directory_tree.txt
@@ -90,4 +93,4 @@
 └── types
     └── index.ts
 
-24 directories, 67 files
+24 directories, 70 files
