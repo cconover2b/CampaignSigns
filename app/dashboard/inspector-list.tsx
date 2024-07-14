@@ -2,15 +2,19 @@ import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Combobox } from '@/components/ui/combobox'
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from '@/components/ui/sheet'
-import { User } from '@/types'
+import { User, Ticket } from '@/types'
+import TicketUpdateForm from '@/components/ticket-update-form'
 
 interface InspectorListProps {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     onInspectorAssign: (value: User | null) => void;
+    onTicketUpdate: () => void;
+    ticket: Ticket;
+    mode: 'update' | 'assign';
 }
 
-function InspectorList({ open, setOpen, onInspectorAssign }: InspectorListProps) {
+function InspectorList({ open, setOpen, onInspectorAssign, onTicketUpdate, ticket, mode }: InspectorListProps) {
     const [inspector, setInspector] = useState<User | null>(null);
 
     const handleInspectorSelect = (user: User) => {
@@ -38,37 +42,47 @@ function InspectorList({ open, setOpen, onInspectorAssign }: InspectorListProps)
         <Sheet open={open} onOpenChange={handleOpenChange}>
             <SheetContent>
                 <SheetHeader>
-                    <SheetTitle>Inspector List</SheetTitle>
+                    <SheetTitle>{mode === 'update' ? 'Update Ticket' : 'Assign Inspector'}</SheetTitle>
                 </SheetHeader>
-                <div className="grid gap-4 py-4">
-                    <Combobox onValueSelect={handleInspectorSelect} />
-                </div>
-                <SheetFooter className="flex-col space-y-2 sm:space-y-0 sm:flex-row sm:space-x-2 pt-4 pb-2">
-                    <Button 
-                        onClick={handleOpenChange} 
-                        variant="outline" 
-                        type='button'
-                        className="w-full h-16 sm:flex-1 text-sm"
-                    >
-                        Close
-                    </Button>
-                    <Button 
-                        onClick={handleAssignWithoutInspector}
-                        className="w-full h-16 sm:flex-1 text-sm"
-                    >
-                        Assign Without Inspector
-                    </Button>
-                    <Button 
-                        onClick={handleAssign} 
-                        disabled={!inspector}
-                        className="w-full h-16 sm:flex-1 text-sm"
-                    >
-                        Assign to Selected Inspector
-                    </Button>
-                </SheetFooter>
+                {mode === 'update' ? (
+                    <TicketUpdateForm
+                        ticket={ticket}
+                        onClose={handleOpenChange}
+                        onUpdate={onTicketUpdate}
+                    />
+                ) : (
+                    <>
+                        <div className="grid gap-4 py-4">
+                            <Combobox onValueSelect={handleInspectorSelect} />
+                        </div>
+                        <SheetFooter className="flex-col space-y-2 sm:space-y-0 sm:flex-row sm:space-x-2 pt-4 pb-2">
+                            <Button 
+                                onClick={handleOpenChange} 
+                                variant="outline" 
+                                type='button'
+                                className="w-full h-16 sm:flex-1 text-sm"
+                            >
+                                Close
+                            </Button>
+                            <Button 
+                                onClick={handleAssignWithoutInspector}
+                                className="w-full h-16 sm:flex-1 text-sm"
+                            >
+                                Assign Without Inspector
+                            </Button>
+                            <Button 
+                                onClick={handleAssign} 
+                                disabled={!inspector}
+                                className="w-full h-16 sm:flex-1 text-sm"
+                            >
+                                Assign to Selected Inspector
+                            </Button>
+                        </SheetFooter>
+                    </>
+                )}
             </SheetContent>
         </Sheet>
     );
 }
 
-export default InspectorList
+export default InspectorList;

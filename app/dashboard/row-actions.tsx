@@ -1,3 +1,5 @@
+// app/dashboard/row-actions.tsx
+
 import React, { useReducer, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Ticket, TicketStatus, User } from '@/types';
@@ -86,7 +88,7 @@ export function RowActions({ row }: { row: Row<Ticket> }) {
         }
     };
 
-    const handleInspectorAssign = async (inspector: User | null): Promise<void> => {
+    const handleInspectorAssign = async (inspector: User): Promise<void> => {
         try {
             setProgress(true);
             const response = await fetch(buildUrl(`ticket/${ticket.id}`), {
@@ -96,7 +98,7 @@ export function RowActions({ row }: { row: Row<Ticket> }) {
                 },
                 body: JSON.stringify({
                     status: TicketStatus.ASSIGNED,
-                    inspector: inspector ? inspector.id : null
+                    inspector: inspector.id
                 })
             });
 
@@ -105,14 +107,13 @@ export function RowActions({ row }: { row: Row<Ticket> }) {
             }
 
             const data = await response.json();
-            toast.success(inspector ? `Assigned to ${inspector.fullName}` : 'Ticket marked as assigned');
+            toast.success(data.message);
             router.refresh();
         } catch (error) {
             console.error('Error in handleInspectorAssign:', error);
-            toast.error("Failed to update ticket");
+            toast.error("Failed to assign inspector");
         } finally {
             setProgress(false);
-            setInspectorListOpen(false);
         }
     };
 
