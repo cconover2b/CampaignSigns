@@ -1,5 +1,5 @@
 // app/api/ticket/bulk/route.ts
-import { connectToDB } from "@/lib/db";
+import { connectToDB } from '@/lib/db';
 import { storageRef } from "@/lib/firebase";
 import { TicketModel } from "@/schemas/ticket";
 import { Ticket } from "@/types";

@@ -4,7 +4,7 @@
 import { hashPasswrod } from '@/lib/utils'
 import { UserModel } from '@/schemas/user'
 import { redirect } from 'next/navigation'
-import { connectToDB } from '@/lib/db'
+import { connectToDB } from '@/lib/db';
 import * as yup from 'yup'
 
 const User = yup.object({

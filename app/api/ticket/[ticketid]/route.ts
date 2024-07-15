@@ -1,6 +1,6 @@
 // app/api/ticket/[ticketid]/route.ts
 
-import { connectToDB } from "@/lib/db";
+import { connectToDB } from '@/lib/db';
 import { TicketModel } from "@/schemas/ticket";
 import { NextRequest, NextResponse } from "next/server";
 import { TicketStatus } from "@/types";

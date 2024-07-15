@@ -8,7 +8,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { CiImageOff } from 'react-icons/ci';
 import { AiOutlineArrowUp } from 'react-icons/ai'
 import { Badge } from "@/components/ui/badge";
-import { RowActions } from "./row-actions";
+import RowActions from "./row-actions";
 import { Checkbox } from "@/components/ui/checkbox";
 
 

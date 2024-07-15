@@ -1,9 +1,10 @@
 // app/api/ticket/new/route.ts
-import { connectToDB } from "@/lib/db";
-import { storageRef } from "@/lib/firebase";
-import { TicketModel } from "@/schemas/ticket";
-import { getDownloadURL, uploadBytes } from "firebase/storage";
-import { NextRequest, NextResponse } from "next/server";
+
+import { NextRequest, NextResponse } from 'next/server';
+import { connectToDB } from '@/lib/db';
+import { TicketModel } from '@/schemas/ticket';
+import { storageRef, uploadBytes, getDownloadURL } from '@/lib/firebase';
+import { LatLong } from '@/types';
 
 export async function POST(request: NextRequest) {
     try {
@@ -13,10 +14,20 @@ export async function POST(request: NextRequest) {
 
         const userInfo = formData.get('userinfo') as string;
         const userJson = JSON.parse(userInfo);
+
+        // Add console.log to inspect userJson
+        console.log(userJson);
+
         let downloadUrl = '';
         const submitterName = userJson.submitterName;
         const submitterPhone = userJson.submitterPhone;
         const submitterEmail = userJson.submitterEmail;
+
+        // Check if latlong is defined
+        if (!userJson.latlong) {
+            throw new Error('latlong is not defined in userJson');
+        }
+
         const lat = userJson.latlong.lat;
         const long = userJson.latlong.long;
         const file = formData.get('image') as File;
@@ -53,18 +64,5 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
             message: "Something went wrong"
         });
-    }
-}
-
-export async function GET() {
-    try {
-        await connectToDB();
-
-        const tickets = await TicketModel.find({}).populate('assignedInspector');
-
-        return NextResponse.json(tickets);
-    } catch (error) {
-        console.log(error);
-        return NextResponse.json({ message: "Failed to get tickets" });
     }
 }
