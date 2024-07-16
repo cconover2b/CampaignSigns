@@ -1,16 +1,27 @@
 // app/dashboard/page.tsx
+"use client";
 
-import React from 'react'
-import Stats from './stats'
-import TicketTable from './ticket-table'
+import React, { Suspense } from 'react';
+import NewTicketButton from './new-ticket-button.tsx';
 
-function DashboardPage() {
-  return (
-    <div>
-        <Stats />
-        <TicketTable />
-    </div>
-  )
-}
+const Stats = React.lazy(() => import('./stats'));
+const TicketTable = React.lazy(() => import('./ticket-table'));
 
-export default DashboardPage
+const DashboardPage: React.FC = () => {
+    return (
+        <div>
+            <div className="flex justify-between items-center mb-4">
+                <h1 className="text-2xl font-bold">Dashboard</h1>
+                <NewTicketButton />
+            </div>
+            <Suspense fallback={<div>Loading stats...</div>}>
+                <Stats />
+            </Suspense>
+            <Suspense fallback={<div>Loading tickets...</div>}>
+                <TicketTable />
+            </Suspense>
+        </div>
+    );
+};
+
+export default DashboardPage;

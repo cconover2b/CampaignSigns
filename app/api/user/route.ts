@@ -1,20 +1,20 @@
 // app/api/user/route.ts
 import { connectToDB } from "@/lib/db";
 import { UserModel } from "@/schemas/user";
-
+import { NextResponse } from 'next/server';
 
 export async function GET() {
-
     try {
-        await connectToDB()
+        await connectToDB();
 
-        const users = await UserModel.find({})
+        const users = await UserModel.find({});
 
-        return Response.json(users)
+        return NextResponse.json(users);
     } catch (error) {
-        console.log(error)
-        return Response.json({
-            message: "Failed to get users"
-        })
+        console.error("Error fetching users:", error);
+        return NextResponse.json(
+            { message: "Failed to get users" },
+            { status: 500 }
+        );
     }
 }

@@ -1,12 +1,10 @@
 // app/api/stats/route.ts
 import { connectToDB } from "@/lib/db"
 import { TicketModel } from "@/schemas/ticket"
-
+import { NextResponse } from 'next/server'
 
 export async function GET() {
-
     try {
-
         await connectToDB()
 
         const tickets = await TicketModel.aggregate([
@@ -18,12 +16,10 @@ export async function GET() {
             }
         ])
 
-        return Response.json(tickets)
+        return NextResponse.json(tickets)
 
-    }catch(error) {
+    } catch(error) {
         console.log(error)
-        return Response.json({
-            message: "failed to get ticket stats"
-        })
+        return NextResponse.json({ message: "failed to get ticket stats" }, { status: 500 })
     }
 }

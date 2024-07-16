@@ -5,35 +5,29 @@ import { TicketModel } from "@/schemas/ticket";
 import { Ticket } from "@/types";
 import { deleteObject } from "firebase/storage";
 import { ObjectId } from "mongodb";
+import { NextResponse } from 'next/server';
 
-export async function PATCH(
-    req: Request
-) {
-
+export async function PATCH(req: Request) {
     try {
         await connectToDB();
 
         const body = await req.json();
         const { tickets, status } = body;
 
-        await TicketModel.updateMany({
-            _id: tickets.map((t: ObjectId) => t)
-        }, {
-            status: status
-        }
+        await TicketModel.updateMany(
+            { _id: tickets.map((t: ObjectId) => t) },
+            { status: status }
         );
 
-        return Response.json("Tickets updated");
+        return NextResponse.json("Tickets updated");
 
     } catch (error) {
         console.log(error);
-        return Response.json("Failed to update tickets");
+        return NextResponse.json("Failed to update tickets", { status: 500 });
     }
 }
 
-export async function DELETE(
-    req: Request
-) {
+export async function DELETE(req: Request) {
     try {
         const body = await req.json();
         const { tickets } = body;
@@ -46,19 +40,18 @@ export async function DELETE(
         });
 
         // TODO: also delete the firebase image
-        if( ticketsToDelete.length > 0 ) {
-            for(const ticket of ticketsToDelete) {
-                if( ticket.photo) {
+        if (ticketsToDelete.length > 0) {
+            for (const ticket of ticketsToDelete) {
+                if (ticket.photo) {
                     const ref = storageRef(ticket.photo)
                     await deleteObject(ref)
                 }
             }
         }
         
-        return Response.json("Tickets deleted");
+        return NextResponse.json("Tickets deleted");
     } catch (error) {
         console.log(error);
-        return Response.json("Failed to delete tickets");
+        return NextResponse.json("Failed to delete tickets", { status: 500 });
     }
-
 }
