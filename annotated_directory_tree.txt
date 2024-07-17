@@ -1,3 +1,4 @@
+Annotated Directory Tree
 .
 ├── README.md                      # Project documentation and setup instructions
 ├── app                            # Next.js 13+ app directory for routing and pages
@@ -142,22 +143,3 @@ This Next.js application is designed to manage and track tickets for a campaign 
     - PostCSS for processing Tailwind CSS.
 
 This application demonstrates a modern, full-stack JavaScript application with a focus on scalability, maintainability, and user experience. It leverages the latest features of Next.js, React, and the broader JavaScript ecosystem to create a robust ticket management system.
-
-
-This annotated directory tree and application overview provide a comprehensive understanding of your project's structure, technologies used, and key features. It should give AI chatbots a solid foundation to understand your application in detail and assist you with fixing errors or improving your code.
-
-Here are a few suggestions to further enhance the information:
-
-1. Add a brief description of the application's purpose and main features at the beginning of your README.md file.
-
-2. Consider creating a CONTRIBUTING.md file with guidelines for developers who might work on the project.
-
-3. Add inline documentation to your React components, especially for complex logic or prop interfaces.
-
-4. Create a separate file for environment variables (e.g., .env.example) to show what configuration is needed without exposing sensitive information.
-
-5. If you have any specific coding standards or architectural decisions that are not immediately obvious from the code, consider documenting them in a separate ARCHITECTURE.md file.
-
-6. For the database schemas, you could add a DATABASE.md file that describes the relationships between different models and any indexing strategies you're using.
-
-By including this additional documentation, you'll provide even more context for AI assistants and human developers alike, making it easier to understand and contribute to your project.
