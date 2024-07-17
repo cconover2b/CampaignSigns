@@ -1,4 +1,5 @@
-Annotated Directory Tree
+# Annotated Directory Tree
+
 .
 ├── README.md                      # Project documentation and setup instructions
 ├── app                            # Next.js 13+ app directory for routing and pages
@@ -143,3 +144,15 @@ This Next.js application is designed to manage and track tickets for a campaign 
     - PostCSS for processing Tailwind CSS.
 
 This application demonstrates a modern, full-stack JavaScript application with a focus on scalability, maintainability, and user experience. It leverages the latest features of Next.js, React, and the broader JavaScript ecosystem to create a robust ticket management system.
+
+# Data Flow
+
+- User Registration: The user registration process is handled in the `auth/register` directory. The `registrationForm.tsx` file contains the form component for user registration, which collects user details and sends them to the server for processing. The `actions/actions.ts` file contains the server-side logic for user registration.
+
+- User Authentication: The authentication process is handled by NextAuth.js, a library for authentication in Next.js applications. The configuration and route handler for NextAuth.js are defined in the `api/auth/[...nextauth]/route.ts` file. The `signin/page.tsx` file contains the sign-in page component with an authentication form.
+
+- Ticket Management: The management of tickets is done through various API endpoints defined in the `api/ticket` directory. The `route.ts` file contains the general ticket operations, such as listing all tickets. The `new/route.ts` file handles the creation of new tickets. The `[ticketid]/route.ts` file handles CRUD operations for specific tickets.
+
+- Dashboard: The main dashboard area of the application is implemented in the `dashboard` directory. The `page.tsx` file contains the main dashboard page component, which includes components for displaying ticket statistics, listing tickets, and selecting inspectors. The `ticket-table.tsx` file contains the ticket listing table component, which uses the `data-table.tsx` component for sorting and filtering the data.
+
+That's a high-level overview of the data flow and key components in the application. In the next steps, we will dive deeper into the code, annotate it, and identify areas for improvement and bug fixing.
