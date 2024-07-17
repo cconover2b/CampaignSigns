@@ -5,7 +5,8 @@ import { Inter as FontSans } from "next/font/google"
 import './globals.css'
 import { cn } from '@/lib/utils'
 import ToastContainerWrapper from '@/components/ui/toast'
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css'
+import Head from 'next/head'
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -24,6 +25,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <Head>
+        <script
+          defer
+          src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_MAPS_API_KEY}&libraries=places,marker`}
+        ></script>
+      </Head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",

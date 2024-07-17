@@ -2,9 +2,9 @@
 import {
     AlertDialog,
     AlertDialogContent,
-} from "@/components/ui/alert-dialog"
-import React from "react"
-import { Loader } from "../ui/loader"
+} from "@/components/ui/alert-dialog";
+import React from "react";
+import Loader from "../ui/loader"; // Ensure this path is correct
 
 function LoadingModal({
     open
@@ -17,7 +17,7 @@ function LoadingModal({
                 <Loader />
             </AlertDialogContent>
         </AlertDialog>
-    )
+    );
 }
 
-export default LoadingModal
+export default LoadingModal;
