@@ -1,23 +1,21 @@
-// components/modal/loading-modal.tsx
-import {
-    AlertDialog,
-    AlertDialogContent,
-} from "@/components/ui/alert-dialog";
 import React from "react";
-import Loader from "../ui/loader"; // Ensure this path is correct
+import { AlertDialog, AlertDialogContent } from "@/components/ui/alert-dialog";
+import Loader from "../ui/loader";
 
-function LoadingModal({
-    open
-}: { open: boolean }) {
-    return (
-        <AlertDialog open={open}>
-            {/* <AlertDialogTrigger>Open</AlertDialogTrigger> */}
-            <AlertDialogContent className="flex p-4 align-middle justify-between">
-                Please wait...
-                <Loader />
-            </AlertDialogContent>
-        </AlertDialog>
-    );
+interface LoadingModalProps {
+  open: boolean;
+  message?: string;
+}
+
+function LoadingModal({ open, message = "Please wait..." }: LoadingModalProps) {
+  return (
+    <AlertDialog open={open}>
+      <AlertDialogContent className="flex flex-col items-center justify-center p-8 space-y-4">
+        <p className="text-lg font-semibold">{message}</p>
+        <Loader />
+      </AlertDialogContent>
+    </AlertDialog>
+  );
 }
 
 export default LoadingModal;

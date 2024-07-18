@@ -1,8 +1,7 @@
-'use client'
 import React, { useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
+import { GoogleMapsError, MarkerLibraryError, UnknownError } from '@/lib/errors';
 
-// Function to build content for map info card
 const buildMapInfoCardContent = (title: string, body: string): string => {
     return `
         <div class="map_infocard_content">
@@ -16,32 +15,35 @@ function Map({ coordinates }: { coordinates: number[] }) {
     useEffect(() => {
         const initMap = async () => {
             try {
-                // Check if Google Maps API is already loaded
                 if (!window.google || !window.google.maps) {
                     console.log('Loading Google Maps API...');
                     const loader = new Loader({
                         apiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY as string,
                         version: 'weekly',
-                        libraries: ['places', 'marker'] // Ensure 'places' and 'marker' libraries are loaded
+                        libraries: ['places', 'marker']
                     });
 
                     await loader.load();
                     console.log('Google Maps API loaded.');
                 }
 
-                // Verify Google Maps API is available
                 if (!window.google || !window.google.maps) {
-                    throw new Error('Google Maps library not loaded.');
+                    throw new GoogleMapsError('Google Maps library not loaded.');
                 }
 
                 const { Map } = google.maps;
 
-                // Use 'any' type for AdvancedMarkerElement
-                const AdvancedMarkerElement: any = (google.maps as any).marker.AdvancedMarkerElement;
+                console.log('google.maps.marker:', google.maps.marker);
 
+                const AdvancedMarkerElement: any = (google.maps as any).marker?.AdvancedMarkerElement;
+
+                if (!AdvancedMarkerElement) {
+                    throw new MarkerLibraryError('Google Maps Marker library not loaded or AdvancedMarkerElement is undefined.');
+                }
+                
                 const position = {
-                    lat: coordinates[0],
-                    lng: coordinates[1]
+                    lat: 33.3528,
+                    lng: 111.7890
                 };
 
                 const mapOptions = {
@@ -50,11 +52,9 @@ function Map({ coordinates }: { coordinates: number[] }) {
                     mapId: 'campaignsigns-1234'
                 };
 
-                // Initialize map
                 const map = new Map(mapRef.current as HTMLDivElement, mapOptions);
                 console.log('Map initialized.');
 
-                // Create marker element
                 const markerElement = document.createElement('div');
                 markerElement.style.backgroundImage = 'url(/marker_flag.png)';
                 markerElement.style.backgroundSize = '32px 32px';
@@ -62,7 +62,6 @@ function Map({ coordinates }: { coordinates: number[] }) {
                 markerElement.style.height = '32px';
                 markerElement.classList.add('marker-drop-animation');
 
-                // Add marker to map
                 const marker = new AdvancedMarkerElement({
                     map: map,
                     position: position,
@@ -72,7 +71,6 @@ function Map({ coordinates }: { coordinates: number[] }) {
                 
                 console.log('Marker added to map.');
 
-                // Create info card and attach to marker
                 const infoCard = new google.maps.InfoWindow({
                     position: position,
                     content: buildMapInfoCardContent('Title', 'Body'),
@@ -86,10 +84,14 @@ function Map({ coordinates }: { coordinates: number[] }) {
                 
                 console.log('Info card opened.');
             } catch (error) {
-                if (error instanceof Error) {
-                    console.error(error.message);
+                if (error instanceof GoogleMapsError || error instanceof MarkerLibraryError) {
+                    console.error(`[${error.name}] ${error.message}`);
+                    console.error(error.stack);
+                } else if (error instanceof Error) {
+                    console.error(`[UnknownError] ${error.message}`);
+                    console.error(error.stack);
                 } else {
-                    console.error('An unknown error occurred');
+                    console.error('[UnknownError] An unknown error occurred');
                 }
             }
         };

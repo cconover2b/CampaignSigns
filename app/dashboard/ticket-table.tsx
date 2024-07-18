@@ -1,26 +1,46 @@
-// app/dashboard/ticket-table.tsx
-import { buildUrl } from '@/lib/utils'
-import { Ticket } from '@/types'
-import React from 'react'
-import { DataTable } from './data-table'
-import { columns } from './columns'
+'use client'
 
-async function TicketTable() {
+import React, { useState, useEffect } from 'react';
+import { buildUrl } from '@/lib/utils';
+import { Ticket } from '@/types';
+import { DataTable } from './data-table';
+import { columns } from './columns';
+import LoadingModal from '../../components/modal/loading-modal';
+import Loader from '../../components/ui/loader';
 
-    const tickets = await fetch(buildUrl('ticket'),{
-        cache: 'no-cache'
-    })
+function TicketTable() {
+  const [tickets, setTickets] = useState<Ticket[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-    const ticketsJson: Ticket[] = await tickets.json()
+  useEffect(() => {
+    const fetchTickets = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(buildUrl('ticket'), {
+          cache: 'no-cache'
+        });
+        const ticketsJson: Ticket[] = await response.json();
+        setTickets(ticketsJson);
+      } catch (error) {
+        console.error('Failed to fetch tickets:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    console.log(ticketsJson)
+    fetchTickets();
+  }, []);
+
   return (
-    <DataTable 
-      columns={columns}
-      data={ticketsJson}
-    />
-
-  )
+    <>
+      <DataTable 
+        columns={columns}
+        data={tickets}
+      />
+      <LoadingModal open={isLoading} message="Loading tickets..." />
+      {isLoading && <Loader size="large" color="#4A90E2" />}
+    </>
+  );
 }
 
-export default TicketTable
+export default TicketTable;
