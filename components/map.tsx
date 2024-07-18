@@ -44,6 +44,8 @@ function Map({ coordinates }: { coordinates: number[] }) {
                 const position = {
                     lat: 33.3528,
                     lng: 111.7890
+                    // lat: coordinates[0],
+                    // lng: coordinates[1]
                 };
 
                 const mapOptions = {
