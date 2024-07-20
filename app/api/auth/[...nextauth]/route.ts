@@ -18,7 +18,14 @@ const handler = nextAuth({
                 email: {},
                 password: {}
             },
-            authorize: async (credentials, req) => {
+        /**
+         * Authenticates a user with the provided credentials.
+         *
+         * @param {object} credentials - The user's credentials.
+         * @param {object} req - The request object.
+         * @return {Promise<object|null>} The authenticated user object if successful, otherwise null.
+         */
+            authorize: async function (credentials, req) {
                 try {
                     await connectToDB();
 
